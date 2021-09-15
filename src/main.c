@@ -1,8 +1,27 @@
+#include "so_long.h"
 
-#include "mlx.h"
-#include <stdio.h>
+int main(int argc, char **argv)
+{
+    t_map map;
+    int i;
 
-int main()
+    i = 0;
+    if (argc != 2)
+        return (1);
+    map = new_map();
+    read_map(argv[1], &map);
+    if (check_map(&map) == -1)
+    {
+        printf("%s\n", map.error_message);
+        return (0);
+    }
+    while (i < map.nb_lines)
+    {
+        printf("%s\n", map.map[i++]);
+    }
+    free_map(map);
+}
+/*int main()
 {
     int width = 300, height = 300;
 
@@ -32,4 +51,4 @@ int main()
     mlx_loop(mlx);
 
     return 0;
-}
+}*/
