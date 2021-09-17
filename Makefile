@@ -7,7 +7,7 @@ LIBFT_FLAGS = -I./libft -L./libft -lftt
 MLX_DIR = ./minilibx-linux
 LIBFT_DIR = ./libft
 OBJS		= ${SRCS:.c=.o}
-CFLAGS= -Wall -Wextra -Werror
+CFLAGS= -Wall #-Wextra -Werror
 SRCS_LIBFT 	= ${wildcard ./libft/*.c}
 OBJS_LIBFT	= ${SRCS_LIBFT:.c=.o}
 

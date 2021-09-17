@@ -1,5 +1,41 @@
 #include "so_long.h"
 
+int start(t_map map)
+{
+    void *mlx;
+    void *window;
+    int x;
+    int y;
+    int white = 0x00FFFFFF;
+    int brown = 0x00a85e32;
+    int width;
+    int height;
+    t_data data;
+
+    x = 0;
+    y = 0;
+    width = map.nb_col * BLOCK_SIZE;
+    height = map.nb_lines * BLOCK_SIZE;
+
+    mlx = mlx_init();
+
+    if (mlx == NULL)
+        return (-1);
+
+    window = mlx_new_window(mlx, width, height, "So Long");
+    data.image = mlx_new_image(mlx, width, height);
+    data.image_addr = mlx_get_data_addr(data.image, &data.bits_per_pixel, &data.size_line, &data.endian);
+
+    draw_block(0, 0, brown, &data);
+    draw_block(0, 50, white, &data);
+
+    mlx_put_image_to_window(mlx, window, data.image, 0, 0);
+
+    mlx_loop(mlx);
+
+    return (1);
+}
+
 int main(int argc, char **argv)
 {
     t_map map;
@@ -19,8 +55,12 @@ int main(int argc, char **argv)
     {
         printf("%s\n", map.map[i++]);
     }
+    if (start(map) == -1)
+        printf("Unable to stat mlx");
+
     free_map(map);
 }
+
 /*int main()
 {
     int width = 300, height = 300;

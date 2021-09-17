@@ -48,6 +48,7 @@ t_map new_map(void)
     map.success = 0;
     map.map = NULL;
     map.nb_lines = 0;
+    map.nb_col = -1;
     map.error_message = NULL;
     return (map);
 }
@@ -86,6 +87,8 @@ void read_map(char *file_path, t_map *result)
     while (has_line == 1)
     {
         has_line = get_next_line(fd, &line);
+        if (result->nb_col == -1)
+            result->nb_col = ft_strlen(line);
         create_map(&line_count, result, line);
     }
     result->nb_lines = line_count;
