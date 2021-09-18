@@ -95,3 +95,47 @@ void read_map(char *file_path, t_map *result)
     result->success = 1;
     result->error_message = NULL;
 }
+
+t_point find_position(t_map map)
+{
+    int y;
+    int x;
+    t_point result;
+    y = 0;
+    while (y < map.nb_lines)
+    {
+        x = 0;
+        while (x < map.nb_col)
+        {
+            if (map.map[y][x] == 'P')
+            {
+                result.x = x;
+                result.y = y;
+                return result;
+            }
+            x++;
+        }
+        y++;
+    }
+}
+
+char find_at(t_map map, t_point point)
+{
+    int y;
+    int x;
+    t_point result;
+    y = 0;
+    while (y < map.nb_lines)
+    {
+        x = 0;
+        while (x < map.nb_col)
+        {
+            if (y == point.y && x == point.x)
+            {
+                return map.map[y][x];
+            }
+            x++;
+        }
+        y++;
+    }
+}

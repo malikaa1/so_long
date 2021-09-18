@@ -26,12 +26,11 @@ all:	$(NAME)
 
 
 clean:
-	${RM} ${OBJS}
+	${RM} ${OBJS}	
 	@make clean -C $(MLX_DIR)
 
 
 fclean:	clean
 	${RM} ${NAME}
-	@$(RM) map.ber
 
 re:	fclean all

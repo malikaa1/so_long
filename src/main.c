@@ -2,36 +2,31 @@
 
 int start(t_map map)
 {
-    void *mlx;
-    void *window;
-    int x;
-    int y;
-    int white = 0x00FFFFFF;
-    int brown = 0x00a85e32;
     int width;
     int height;
     t_data data;
 
-    x = 0;
-    y = 0;
+    data.map = &map;
+    data.game = malloc(sizeof(t_game));
+
     width = map.nb_col * BLOCK_SIZE;
     height = map.nb_lines * BLOCK_SIZE;
-
-    mlx = mlx_init();
-
-    if (mlx == NULL)
+    data.mlx = mlx_init();
+    if (data.mlx == NULL)
         return (-1);
-
-    window = mlx_new_window(mlx, width, height, "So Long");
-    data.image = mlx_new_image(mlx, width, height);
+    data.window = mlx_new_window(data.mlx, width, height, "So Long");
+    data.image = mlx_new_image(data.mlx, width, height);
     data.image_addr = mlx_get_data_addr(data.image, &data.bits_per_pixel, &data.size_line, &data.endian);
 
-    draw_block(0, 0, brown, &data);
-    draw_block(0, 50, white, &data);
+    mlx_key_hook(data.window, on_key_press, &data);
 
-    mlx_put_image_to_window(mlx, window, data.image, 0, 0);
+    draw_map(data);
+    init_game(&data);
 
-    mlx_loop(mlx);
+    mlx_put_image_to_window(data.mlx, data.window, data.image, 0, 0);
+    mlx_loop(data.mlx);
+
+    free(data.game);
 
     return (1);
 }
@@ -46,6 +41,12 @@ int main(int argc, char **argv)
         return (1);
     map = new_map();
     read_map(argv[1], &map);
+    if (map.success == 0)
+    {
+        printf("%s\n", map.error_message);
+        return (0);
+    }
+
     if (check_map(&map) == -1)
     {
         printf("%s\n", map.error_message);
