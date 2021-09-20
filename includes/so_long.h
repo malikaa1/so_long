@@ -32,6 +32,7 @@ typedef struct s_point
 typedef struct s_game
 {
     t_point position;
+    int moves;
 
 } t_game;
 
@@ -42,16 +43,13 @@ typedef struct s_data
     int bits_per_pixel;
     int size_line;
     int endian;
-    void    *mlx;
-    void    *window;
+    void *mlx;
+    void *window;
 
     t_game *game;
     t_map *map;
 
 } t_data;
-
-
-
 
 void read_map(char *file_path, t_map *result);
 int is_valid_map_char(char *line);
@@ -62,12 +60,15 @@ void free_map(t_map map);
 t_map new_map(void);
 
 t_point find_position(t_map map);
-void init_game(t_data* data);
+void init_game(t_data *data);
 char find_at(t_map map, t_point point);
 
 void draw_pixel(t_point point, int color, t_data *data);
 void draw_block(t_point point, int color, t_data *data);
 void draw_map(t_data data);
-
+void close_window(t_data *data);
 void on_key_press(int code, t_data *data);
+void move_down(t_data *data);
+void move_right(t_data *data);
+void move_left(t_data *data, t_point next_position);
 #endif

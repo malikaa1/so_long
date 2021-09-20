@@ -3,4 +3,5 @@
 void init_game(t_data* data)
 {
     data->game->position = find_position(*data->map);
+    data->game->moves = 0;
 }

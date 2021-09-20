@@ -11,7 +11,12 @@ void draw_block(t_point point, int color, t_data *data)
 {
     t_point current_point;
 
+    point.x = point.x * BLOCK_SIZE;
+    point.y = point.y * BLOCK_SIZE;
+
     current_point = point;
+    current_point.x = current_point.x;
+    current_point.y = current_point.y;
 
     while (current_point.y <= (point.y + BLOCK_SIZE))
     {
@@ -39,8 +44,8 @@ void draw_map(t_data data)
         x = 0;
         while (x < map->nb_col)
         {
-            p.x = x * BLOCK_SIZE;
-            p.y = y * BLOCK_SIZE;
+            p.x = x;
+            p.y = y;
             if (map->map[y][x] == '1')
                 draw_block(p, BROWN, &data);
             else if (map->map[y][x] == '0')
