@@ -7,7 +7,6 @@
 #include "mlx.h"
 #include "libft.h"
 
-#define BLOCK_SIZE 50
 #define WHITE 0x00FFFFFF
 #define BROWN 0x00a85e32
 #define BLACK 0x00000000
@@ -21,6 +20,10 @@ typedef struct s_map
     int nb_lines;
     int nb_col;
     char *error_message;
+
+    int block_sizex;
+    int block_sizey;
+
 } t_map;
 
 typedef struct s_point
@@ -33,7 +36,9 @@ typedef struct s_game
 {
     t_point position;
     int moves;
-
+    int playing;
+    int score;
+    
 } t_game;
 
 typedef struct s_data
@@ -52,14 +57,16 @@ typedef struct s_data
 } t_data;
 
 void read_map(char *file_path, t_map *result);
-int is_valid_map_char(char *line);
+int is_valid_map_char(t_map map);
 int check_walls(t_map map);
 int check_char(t_map map, char c);
 int check_map(t_map *map);
 void free_map(t_map map);
 t_map new_map(void);
+int check_map(t_map *map);
+int check_shape(t_map map);
 
-t_point find_position(t_map map);
+t_point find_position(t_map map, char c);
 void init_game(t_data *data);
 char find_at(t_map map, t_point point);
 
@@ -68,7 +75,8 @@ void draw_block(t_point point, int color, t_data *data);
 void draw_map(t_data data);
 void close_window(t_data *data);
 void on_key_press(int code, t_data *data);
-void move_down(t_data *data);
-void move_right(t_data *data);
-void move_left(t_data *data, t_point next_position);
+void set_block_size(t_data *data);
+void end_of_game(t_data *data);
+void move_player(t_data *data, t_point next_position);
+int refresh_window(t_data *data);
 #endif

@@ -11,17 +11,17 @@ void draw_block(t_point point, int color, t_data *data)
 {
     t_point current_point;
 
-    point.x = point.x * BLOCK_SIZE;
-    point.y = point.y * BLOCK_SIZE;
+    point.x = point.x * data->map->block_sizex;
+    point.y = point.y * data->map->block_sizey;
 
     current_point = point;
     current_point.x = current_point.x;
     current_point.y = current_point.y;
 
-    while (current_point.y <= (point.y + BLOCK_SIZE))
+    while (current_point.y <= (point.y + data->map->block_sizey))
     {
         current_point.x = point.x;
-        while (current_point.x <= (point.x + BLOCK_SIZE))
+        while (current_point.x <= (point.x + data->map->block_sizex))
         {
             draw_pixel(current_point, color, data);
             current_point.x++;

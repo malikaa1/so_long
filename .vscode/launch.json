@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "/home/user42/projects/so_long/so_long",
-            "args": ["./map.ber"],
+            "args": ["./map1.ber"],
             "stopAtEntry": false,
             "cwd": "/home/user42/projects/so_long",
             "environment": [],

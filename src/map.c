@@ -1,43 +1,48 @@
 #include "so_long.h"
 
-int is_valid_map_char(char *line)
+int is_valid_map_char(t_map map)
 {
-    char *tmp;
+    char **tmp;
+    int i;
+    int j;
 
-    tmp = line;
-    while (*tmp != '\0')
+    tmp = map.map;
+    j = 0;
+    while (j < map.nb_lines)
     {
-        if (*tmp != '1' && *tmp != '0' && *tmp != 'E' &&
-            *tmp != 'P' && *tmp != 'C')
-            return (-1);
-        tmp++;
+        i = 0;
+        while (i < map.nb_col)
+        {
+            if (tmp[j][i] != '1' && tmp[j][i] != '0' && tmp[j][i] != 'E' &&
+                tmp[j][i] != 'P' && tmp[j][i] != 'C')
+            {
+                return (-1);
+            }
+            i++;
+        }
+        j++;
     }
     return (1);
 }
 
-void create_map(int *line_count, t_map *result, char *line)
+void create_map(int *line_count, t_map *map, char *line)
 {
     char **temp;
     int i;
 
+    i = 0;
     temp = NULL;
     if (line != NULL)
         *line_count = *line_count + 1;
-    if (line != NULL && is_valid_map_char(line) == -1)
-    {
-        result->success = 0;
-        result->error_message = "map must contain only E 1 C 0 P";
-    }
-    if (result->map != NULL)
-        temp = result->map;
-    result->map = malloc(*line_count * sizeof(char **));
-    i = 0;
+    if (map->map != NULL)
+        temp = map->map;
+    map->map = malloc(*line_count * sizeof(char **));
     while (temp != NULL && i < *line_count - 1)
     {
-        (result->map)[i] = temp[i];
+        (map->map)[i] = temp[i];
         i++;
     }
-    (result->map)[i] = line;
+    (map->map)[i] = line;
     if (temp != NULL)
         free(temp);
 }
@@ -50,16 +55,19 @@ t_map new_map(void)
     map.nb_lines = 0;
     map.nb_col = -1;
     map.error_message = NULL;
+    map.block_sizex = 50;
+    map.block_sizey = 50;
     return (map);
 }
 
 void free_map(t_map map)
 {
+    printf("freeing map\n");
     int i;
-    if (map.map == NULL)
-        return;
 
     i = 0;
+    if (map.map == NULL)
+        return;
     while (i < map.nb_lines)
     {
         if (map.map[i] != NULL)
@@ -69,6 +77,7 @@ void free_map(t_map map)
 
     free(map.map);
 }
+
 void read_map(char *file_path, t_map *result)
 {
     char *line;
@@ -96,46 +105,19 @@ void read_map(char *file_path, t_map *result)
     result->error_message = NULL;
 }
 
-t_point find_position(t_map map)
+void set_block_size(t_data *data)
 {
-    int y;
-    int x;
-    t_point result;
-    y = 0;
-    while (y < map.nb_lines)
-    {
-        x = 0;
-        while (x < map.nb_col)
-        {
-            if (map.map[y][x] == 'P')
-            {
-                result.x = x;
-                result.y = y;
-                return result;
-            }
-            x++;
-        }
-        y++;
-    }
-}
 
-char find_at(t_map map, t_point point)
-{
-    int y;
     int x;
-    t_point result;
-    y = 0;
-    while (y < map.nb_lines)
+    int y;
+    mlx_get_screen_size(data->mlx, &x, &y);
+
+    if (data->map->nb_col * data->map->block_sizex > x)
     {
-        x = 0;
-        while (x < map.nb_col)
-        {
-            if (y == point.y && x == point.x)
-            {
-                return map.map[y][x];
-            }
-            x++;
-        }
-        y++;
+        data->map->block_sizex = x / data->map->nb_col;
+    }
+    if (data->map->nb_lines * data->map->block_sizey > y)
+    {
+        data->map->block_sizey = y / data->map->nb_lines;
     }
 }

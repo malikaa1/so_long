@@ -1,5 +1,23 @@
 #include "so_long.h"
-
+int check_shape(t_map map)
+{
+    int j;
+    j = 0;
+    while (j < map.nb_lines)
+    {
+        if (j != 0)
+        {
+            if (ft_strlen(map.map[j]) != ft_strlen(map.map[j - 1]))
+            {
+                map.success = 0;
+                map.error_message = "map must be rectangular";
+                return (-1);
+            }
+        }
+        j++;
+    }
+    return (1);
+}
 int check_walls(t_map map)
 {
     int i;
@@ -54,31 +72,25 @@ int check_char(t_map map, char c)
     return (-1);
 }
 
+int set_error(t_map *map, char *error)
+{
+    map->error_message = error;
+    map->success = 0;
+    return (-1);
+}
 int check_map(t_map *map)
 {
+    if (check_shape(*map) == -1)
+        return (set_error(map, "Error\n map must be rectangular"));
     if (check_walls(*map) == -1)
-    {
-        map->error_message = "map must be surrounded by walls";
-        map->success = 0;
-        return (-1);
-    }
+        return (set_error(map, "Error\n map must be surrounded by walls"));
+    if (is_valid_map_char(*map) == -1)
+        return (set_error(map, "Error\n map must contain only E 1 C 0 P"));
     if (check_char(*map, 'E') == -1)
-    {
-        map->error_message = "map must have one exit";
-        map->success = 0;
-        return (-1);
-    }
+        return (set_error(map, "Error\n map must have one exit"));
     if (check_char(*map, 'C') == -1)
-    {
-        map->error_message = "map must have at least one collectible";
-        map->success = 0;
-        return (-1);
-    }
+        return (set_error(map, "Error\n map must have at least one collectible"));
     if (check_char(*map, 'P') == -1)
-    {
-        map->error_message = "map must have one starting position";
-        map->success = 0;
-        return (-1);
-    }
+        return (set_error(map, "Error\n map must have one starting position"));
     return (1);
 }
