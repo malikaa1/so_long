@@ -38,6 +38,7 @@ typedef struct s_game
     int moves;
     int playing;
     int score;
+    int nb_collectible;
     
 } t_game;
 
@@ -56,15 +57,18 @@ typedef struct s_data
 
 } t_data;
 
+
 void read_map(char *file_path, t_map *result);
+void	ft_free(t_list *list);
 int is_valid_map_char(t_map map);
 int check_walls(t_map map);
-int check_char(t_map map, char c);
+int count_char(t_map map, char c);
 int check_map(t_map *map);
 void free_map(t_map map);
 t_map new_map(void);
 int check_map(t_map *map);
 int check_shape(t_map map);
+int nb_of_collectible(t_map map);
 
 t_point find_position(t_map map, char c);
 void init_game(t_data *data);

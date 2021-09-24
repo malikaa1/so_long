@@ -1,11 +1,13 @@
-#include"so_long.h"
+#include "so_long.h"
 
 t_point find_position(t_map map, char c)
 {
     int y;
     int x;
     t_point result;
-    
+
+    result.x = 0;
+    result.y = 0;
     y = 0;
     while (y < map.nb_lines)
     {
@@ -22,6 +24,8 @@ t_point find_position(t_map map, char c)
         }
         y++;
     }
+
+    return (result);
 }
 
 char find_at(t_map map, t_point point)
@@ -43,4 +47,5 @@ char find_at(t_map map, t_point point)
         }
         y++;
     }
+    return (0);
 }

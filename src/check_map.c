@@ -48,13 +48,15 @@ int check_walls(t_map map)
     return (0);
 }
 
-int check_char(t_map map, char c)
+int count_char(t_map map, char c)
 {
     char **tmp;
     int i;
     int j;
     int nb_col;
+    int count;
 
+    count = 0;
     tmp = map.map;
     j = 1;
     nb_col = ft_strlen(tmp[j]);
@@ -64,12 +66,12 @@ int check_char(t_map map, char c)
         while (i < nb_col - 1)
         {
             if (tmp[j][i] == c)
-                return (1);
+                count++;
             i++;
         }
         j++;
     }
-    return (-1);
+    return (count);
 }
 
 int set_error(t_map *map, char *error)
@@ -86,11 +88,11 @@ int check_map(t_map *map)
         return (set_error(map, "Error\n map must be surrounded by walls"));
     if (is_valid_map_char(*map) == -1)
         return (set_error(map, "Error\n map must contain only E 1 C 0 P"));
-    if (check_char(*map, 'E') == -1)
+    if (count_char(*map, 'E') <= 0)
         return (set_error(map, "Error\n map must have one exit"));
-    if (check_char(*map, 'C') == -1)
+    if (count_char(*map, 'C') <= 0)
         return (set_error(map, "Error\n map must have at least one collectible"));
-    if (check_char(*map, 'P') == -1)
+    if (count_char(*map, 'P') != 1)
         return (set_error(map, "Error\n map must have one starting position"));
     return (1);
 }

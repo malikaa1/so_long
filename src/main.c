@@ -25,6 +25,8 @@ int start(t_map map)
     init_game(&data);
     mlx_put_image_to_window(data.mlx, data.window, data.image, 0, 0);
     mlx_loop(data.mlx);
+
+    printf("end loop");
     return (1);
 }
 
